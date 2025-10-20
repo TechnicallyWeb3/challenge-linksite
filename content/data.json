@@ -1,0 +1,60 @@
+{
+  "theme": "technicallyweb3",
+  "profile": {
+    "name": "Technically Web3",
+    "title": "Web3 Education & Community",
+    "bio": "Building the future of web3 through education, community, and technical excellence. Join us on our journey to make web3 accessible to everyone!",
+    "avatar": "https://via.placeholder.com/150x150/6366f1/ffffff?text=TW3"
+  },
+  "links": [
+    {
+      "title": "🚀 Get Started with Web3",
+      "url": "https://technicallyweb3.com/getting-started",
+      "icon": "🚀",
+      "description": "Your complete guide to web3 fundamentals"
+    },
+    {
+      "title": "📚 Learning Resources",
+      "url": "https://technicallyweb3.com/resources",
+      "icon": "📚",
+      "description": "Curated tutorials, courses, and documentation"
+    },
+    {
+      "title": "💬 Join Our Community",
+      "url": "https://discord.gg/technicallyweb3",
+      "icon": "💬",
+      "description": "Connect with fellow web3 builders"
+    },
+    {
+      "title": "🎓 Web3 Bootcamp",
+      "url": "https://technicallyweb3.com/bootcamp",
+      "icon": "🎓",
+      "description": "Intensive 12-week web3 development program"
+    },
+    {
+      "title": "🔧 Developer Tools",
+      "url": "https://technicallyweb3.com/tools",
+      "icon": "🔧",
+      "description": "Essential tools for web3 development"
+    },
+    {
+      "title": "📰 Latest News",
+      "url": "https://technicallyweb3.com/news",
+      "icon": "📰",
+      "description": "Stay updated with web3 trends and updates"
+    }
+  ],
+  "social": {
+    "twitter": "technicallyweb3",
+    "github": "technicallyweb3",
+    "linkedin": "technicallyweb3",
+    "youtube": "technicallyweb3",
+    "discord": "technicallyweb3"
+  },
+  "customization": {
+    "background": "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+    "accentColor": "#6366f1",
+    "textColor": "#ffffff",
+    "linkColor": "#fbbf24"
+  }
+}
