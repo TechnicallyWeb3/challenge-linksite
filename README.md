@@ -102,7 +102,7 @@ Your renderer should work with JSON files following this structure:
 
 ## 📤 Submission
 
-1. **Fork this repository**
+1. **Fork this repository** and **create a new branch** for your submission
 2. **Build your renderer** in `index.html` and `script.js`
 3. **Create example themes** in `/styles`
 4. **Add example content** in `/content`
