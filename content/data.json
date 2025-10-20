@@ -56,5 +56,11 @@
     "accentColor": "#6366f1",
     "textColor": "#ffffff",
     "linkColor": "#fbbf24"
+  },
+  "metadata": {
+    "version": "1.0.0",
+    "lastUpdated": "2024-01-01",
+    "author": "Technically Web3",
+    "description": "Official Technically Web3 link-in-bio page"
   }
 }

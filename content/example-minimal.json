@@ -1,0 +1,29 @@
+{
+  "theme": "minimal",
+  "profile": {
+    "name": "Jane Developer",
+    "title": "Full Stack Developer",
+    "bio": "Passionate about building amazing web experiences with modern technologies."
+  },
+  "links": [
+    {
+      "title": "My Portfolio",
+      "url": "https://janedev.com",
+      "icon": "💼"
+    },
+    {
+      "title": "GitHub",
+      "url": "https://github.com/janedev",
+      "icon": "🐙"
+    },
+    {
+      "title": "Contact Me",
+      "url": "mailto:jane@example.com",
+      "icon": "📧"
+    }
+  ],
+  "social": {
+    "twitter": "janedev",
+    "github": "janedev"
+  }
+}

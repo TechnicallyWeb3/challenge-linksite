@@ -1,12 +1,22 @@
 /**
- * Link-in-Bio Dynamic Renderer
- * This script loads JSON configuration and renders the link-in-bio page
- * DO NOT MODIFY - This file should remain unchanged
+ * Universal Link-in-Bio Renderer
+ * 
+ * This is a REFERENCE IMPLEMENTATION for the TW3 challenge.
+ * Community members should build their own renderer that works universally
+ * with any JSON content structure.
+ * 
+ * Features this reference implementation includes:
+ * - Dynamic theme loading
+ * - Universal JSON parsing
+ * - Error handling
+ * - Accessibility features
+ * - Performance optimizations
  */
 
-class LinkInBioRenderer {
+class UniversalLinkRenderer {
     constructor() {
         this.config = null;
+        this.theme = null;
         this.init();
     }
 
@@ -14,10 +24,11 @@ class LinkInBioRenderer {
         try {
             await this.loadConfiguration();
             await this.loadTheme();
-            this.renderPage();
+            this.updatePageTitle();
+            this.renderContent();
             this.hideLoading();
         } catch (error) {
-            console.error('Failed to initialize link-in-bio:', error);
+            console.error('Renderer initialization failed:', error);
             this.showError(error.message);
         }
     }
@@ -26,13 +37,13 @@ class LinkInBioRenderer {
         try {
             const response = await fetch('./content/data.json');
             if (!response.ok) {
-                throw new Error(`Failed to load configuration: ${response.status} ${response.statusText}`);
+                throw new Error(`Failed to load configuration: ${response.status}`);
             }
             this.config = await response.json();
             
-            // Validate required fields
-            if (!this.config.profile || !this.config.links) {
-                throw new Error('Invalid configuration: missing required fields');
+            // Basic validation
+            if (!this.config) {
+                throw new Error('Invalid or empty configuration');
             }
         } catch (error) {
             throw new Error(`Configuration error: ${error.message}`);
@@ -40,68 +51,122 @@ class LinkInBioRenderer {
     }
 
     async loadTheme() {
-        const theme = this.config.theme || 'technicallyweb3';
-        const themePath = `./styles/${theme}.css`;
+        const themeName = this.config.theme || 'default';
+        const themePath = `./styles/${themeName}.css`;
         
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
+            // Check if theme already loaded
+            const existingTheme = document.querySelector(`link[href="${themePath}"]`);
+            if (existingTheme) {
+                resolve();
+                return;
+            }
+
             const link = document.createElement('link');
             link.rel = 'stylesheet';
             link.href = themePath;
-            link.onload = () => resolve();
+            link.onload = () => {
+                this.theme = themeName;
+                resolve();
+            };
             link.onerror = () => {
-                console.warn(`Theme ${theme} not found, using default styling`);
-                resolve(); // Continue with default styles
+                console.warn(`Theme ${themeName} not found, using default styling`);
+                this.theme = 'default';
+                resolve();
             };
             document.head.appendChild(link);
         });
     }
 
-    renderPage() {
-        this.renderProfile();
-        this.renderLinks();
-        this.renderSocial();
-        this.applyCustomization();
+    updatePageTitle() {
+        if (this.config.profile?.name) {
+            document.title = `${this.config.profile.name} - Link-in-Bio`;
+        }
+    }
+
+    renderContent() {
+        const app = document.getElementById('app');
+        if (!app) return;
+
+        // Clear existing content
+        app.innerHTML = '';
+
+        // Create main container
+        const container = document.createElement('div');
+        container.className = 'container';
+
+        // Render profile section
+        if (this.config.profile) {
+            container.appendChild(this.renderProfile());
+        }
+
+        // Render links section
+        if (this.config.links && Array.isArray(this.config.links)) {
+            container.appendChild(this.renderLinks());
+        }
+
+        // Render social section
+        if (this.config.social) {
+            container.appendChild(this.renderSocial());
+        }
+
+        // Apply customizations
+        this.applyCustomizations();
+
+        app.appendChild(container);
     }
 
     renderProfile() {
         const profile = this.config.profile;
-        
-        // Set avatar
-        const avatar = document.getElementById('avatar');
-        if (avatar && profile.avatar) {
+        const profileSection = document.createElement('div');
+        profileSection.className = 'profile';
+
+        // Avatar
+        if (profile.avatar) {
+            const avatar = document.createElement('img');
+            avatar.className = 'avatar';
             avatar.src = profile.avatar;
-            avatar.alt = `${profile.name} avatar`;
+            avatar.alt = profile.name ? `${profile.name} avatar` : 'Profile avatar';
+            profileSection.appendChild(avatar);
         }
 
-        // Set name
-        const name = document.getElementById('name');
-        if (name && profile.name) {
+        // Name
+        if (profile.name) {
+            const name = document.createElement('h1');
+            name.className = 'name';
             name.textContent = profile.name;
+            profileSection.appendChild(name);
         }
 
-        // Set title
-        const title = document.getElementById('title');
-        if (title && profile.title) {
+        // Title
+        if (profile.title) {
+            const title = document.createElement('h2');
+            title.className = 'title';
             title.textContent = profile.title;
+            profileSection.appendChild(title);
         }
 
-        // Set bio
-        const bio = document.getElementById('bio');
-        if (bio && profile.bio) {
+        // Bio
+        if (profile.bio) {
+            const bio = document.createElement('p');
+            bio.className = 'bio';
             bio.textContent = profile.bio;
+            profileSection.appendChild(bio);
         }
+
+        return profileSection;
     }
 
     renderLinks() {
-        const linksContainer = document.getElementById('links');
-        if (!linksContainer || !this.config.links) return;
-
-        linksContainer.innerHTML = '';
+        const linksSection = document.createElement('div');
+        linksSection.className = 'links';
 
         this.config.links.forEach((link, index) => {
             const linkElement = this.createLinkElement(link, index);
-            linksContainer.appendChild(linkElement);
+            linksSection.appendChild(linkElement);
         });
+
+        return linksSection;
     }
 
     createLinkElement(link, index) {
@@ -116,29 +181,30 @@ class LinkInBioRenderer {
         linkContent.rel = 'noopener noreferrer';
         linkContent.setAttribute('aria-label', `Visit ${link.title}`);
 
-        // Create icon
-        const icon = document.createElement('div');
-        icon.className = 'link-icon';
-        icon.textContent = link.icon || '🔗';
+        // Icon
+        if (link.icon) {
+            const icon = document.createElement('div');
+            icon.className = 'link-icon';
+            icon.textContent = link.icon;
+            linkContent.appendChild(icon);
+        }
 
-        // Create text content
+        // Text content
         const textContent = document.createElement('div');
         textContent.className = 'link-text';
 
         const title = document.createElement('div');
         title.className = 'link-title';
         title.textContent = link.title;
-
-        const description = document.createElement('div');
-        description.className = 'link-description';
-        description.textContent = link.description || '';
-
         textContent.appendChild(title);
+
         if (link.description) {
+            const description = document.createElement('div');
+            description.className = 'link-description';
+            description.textContent = link.description;
             textContent.appendChild(description);
         }
 
-        linkContent.appendChild(icon);
         linkContent.appendChild(textContent);
         linkItem.appendChild(linkContent);
 
@@ -146,10 +212,8 @@ class LinkInBioRenderer {
     }
 
     renderSocial() {
-        const socialContainer = document.getElementById('social');
-        if (!socialContainer || !this.config.social) return;
-
-        socialContainer.innerHTML = '';
+        const socialSection = document.createElement('div');
+        socialSection.className = 'social';
 
         const socialPlatforms = {
             twitter: { icon: '🐦', url: 'https://twitter.com/' },
@@ -165,9 +229,11 @@ class LinkInBioRenderer {
         Object.entries(this.config.social).forEach(([platform, handle]) => {
             if (handle && socialPlatforms[platform]) {
                 const socialLink = this.createSocialLink(platform, handle, socialPlatforms[platform]);
-                socialContainer.appendChild(socialLink);
+                socialSection.appendChild(socialLink);
             }
         });
+
+        return socialSection;
     }
 
     createSocialLink(platform, handle, platformData) {
@@ -182,27 +248,21 @@ class LinkInBioRenderer {
         return link;
     }
 
-    applyCustomization() {
+    applyCustomizations() {
         if (!this.config.customization) return;
 
         const root = document.documentElement;
         const customization = this.config.customization;
 
-        // Apply custom CSS variables
-        if (customization.background) {
-            root.style.setProperty('--bg-primary', customization.background);
-        }
-        if (customization.accentColor) {
-            root.style.setProperty('--accent-color', customization.accentColor);
-        }
-        if (customization.textColor) {
-            root.style.setProperty('--text-primary', customization.textColor);
-        }
-        if (customization.linkColor) {
-            root.style.setProperty('--link-color', customization.linkColor);
-        }
+        // Apply CSS custom properties
+        Object.entries(customization).forEach(([key, value]) => {
+            if (value) {
+                const cssVar = `--${key.replace(/([A-Z])/g, '-$1').toLowerCase()}`;
+                root.style.setProperty(cssVar, value);
+            }
+        });
 
-        // Apply background directly to body if specified
+        // Apply background to body if specified
         if (customization.background) {
             document.body.style.background = customization.background;
         }
@@ -229,52 +289,25 @@ class LinkInBioRenderer {
     }
 }
 
-// Analytics and performance tracking
-class Analytics {
+// Performance monitoring
+class PerformanceMonitor {
     constructor() {
         this.init();
     }
 
     init() {
-        // Track page load time
         window.addEventListener('load', () => {
             const loadTime = performance.now();
-            console.log(`Page loaded in ${loadTime.toFixed(2)}ms`);
+            console.log(`Renderer loaded in ${loadTime.toFixed(2)}ms`);
         });
-
-        // Track link clicks
-        document.addEventListener('click', (event) => {
-            const link = event.target.closest('a');
-            if (link) {
-                this.trackClick(link.href, link.textContent.trim());
-            }
-        });
-    }
-
-    trackClick(url, text) {
-        console.log(`Link clicked: ${text} -> ${url}`);
-        // Add your analytics tracking here
     }
 }
 
 // Initialize the application
 document.addEventListener('DOMContentLoaded', () => {
-    new LinkInBioRenderer();
-    new Analytics();
+    new UniversalLinkRenderer();
+    new PerformanceMonitor();
 });
 
-// Service Worker registration for offline support
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js')
-            .then(registration => {
-                console.log('SW registered: ', registration);
-            })
-            .catch(registrationError => {
-                console.log('SW registration failed: ', registrationError);
-            });
-    });
-}
-
-// Export for potential external use
-window.LinkInBioRenderer = LinkInBioRenderer;
+// Export for external use
+window.UniversalLinkRenderer = UniversalLinkRenderer;

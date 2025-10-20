@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Link-in-Bio - Technically Web3</title>
-    <meta name="description" content="A beautiful link-in-bio page powered by JSON configuration">
+    <title>Link-in-Bio Renderer</title>
+    <meta name="description" content="Universal link-in-bio renderer powered by JSON configuration">
     
     <!-- Preload fonts for better performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,33 +14,39 @@
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🔗%3C/text%3E%3C/svg%3E">
     
-    <!-- Theme CSS will be loaded dynamically -->
+    <!-- Base styles - theme will be loaded dynamically -->
     <style>
-        /* Base styles while loading */
-        body {
+        /* Reset and base styles */
+        * {
             margin: 0;
             padding: 0;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #ffffff;
-            min-height: 100vh;
+            box-sizing: border-box;
         }
         
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            min-height: 100vh;
+            background: #f8fafc;
+            color: #1e293b;
+        }
+        
+        /* Loading state */
         .loading {
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             font-size: 1.2rem;
-            color: rgba(255, 255, 255, 0.8);
+            color: #64748b;
         }
         
         .loading::after {
             content: '';
             width: 20px;
             height: 20px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-top: 2px solid #6366f1;
+            border: 2px solid #e2e8f0;
+            border-top: 2px solid #3b82f6;
             border-radius: 50%;
             animation: spin 1s linear infinite;
             margin-left: 0.5rem;
@@ -54,64 +60,64 @@
         .hidden {
             display: none !important;
         }
+        
+        /* Error state */
+        .error {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+            padding: 2rem;
+            background: #f8fafc;
+            color: #1e293b;
+        }
+        
+        .error h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: #dc2626;
+        }
+        
+        .error p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            color: #64748b;
+        }
+        
+        .error button {
+            background: #3b82f6;
+            border: none;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+        }
+        
+        .error button:hover {
+            background: #2563eb;
+        }
     </style>
 </head>
 <body>
     <!-- Loading state -->
     <div id="loading" class="loading">
-        Loading your link-in-bio...
+        Loading content...
     </div>
     
     <!-- Main content container -->
     <div id="app" class="hidden">
-        <div class="container">
-            <!-- Profile Section -->
-            <div class="profile">
-                <img id="avatar" class="avatar" src="" alt="Profile Avatar">
-                <h1 id="name" class="name"></h1>
-                <h2 id="title" class="title"></h2>
-                <p id="bio" class="bio"></p>
-            </div>
-            
-            <!-- Links Section -->
-            <div class="links" id="links">
-                <!-- Links will be dynamically generated -->
-            </div>
-            
-            <!-- Social Links Section -->
-            <div class="social" id="social">
-                <!-- Social links will be dynamically generated -->
-            </div>
-        </div>
+        <!-- Content will be dynamically rendered here -->
     </div>
     
     <!-- Error state -->
-    <div id="error" class="hidden" style="
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        text-align: center;
-        padding: 2rem;
-        color: #ffffff;
-    ">
-        <h1 style="font-size: 2rem; margin-bottom: 1rem;">⚠️ Error</h1>
-        <p id="error-message" style="font-size: 1.1rem; margin-bottom: 2rem; color: rgba(255, 255, 255, 0.8);">
-            Failed to load your link-in-bio configuration.
-        </p>
-        <button onclick="location.reload()" style="
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #ffffff;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        " onmouseover="this.style.background='rgba(255, 255, 255, 0.2)'" onmouseout="this.style.background='rgba(255, 255, 255, 0.1)'">
-            Try Again
-        </button>
+    <div id="error" class="hidden error">
+        <h1>⚠️ Error</h1>
+        <p id="error-message">Failed to load content configuration.</p>
+        <button onclick="location.reload()">Try Again</button>
     </div>
     
     <!-- Scripts -->

@@ -1,0 +1,53 @@
+{
+  "theme": "creator",
+  "profile": {
+    "name": "Alex Creator",
+    "title": "Content Creator & Influencer",
+    "bio": "Creating engaging content about technology, lifestyle, and entrepreneurship. Follow my journey!",
+    "avatar": "https://via.placeholder.com/200x200/ff6b6b/ffffff?text=AC"
+  },
+  "links": [
+    {
+      "title": "🎥 YouTube Channel",
+      "url": "https://youtube.com/@alexcreator",
+      "icon": "🎥",
+      "description": "Weekly tech reviews and tutorials"
+    },
+    {
+      "title": "📱 Instagram",
+      "url": "https://instagram.com/alexcreator",
+      "icon": "📱",
+      "description": "Behind-the-scenes content"
+    },
+    {
+      "title": "📧 Newsletter",
+      "url": "https://alexcreator.substack.com",
+      "icon": "📧",
+      "description": "Weekly tech insights delivered to your inbox"
+    },
+    {
+      "title": "🛍️ Merch Store",
+      "url": "https://alexcreator.threadless.com",
+      "icon": "🛍️",
+      "description": "Exclusive creator merchandise"
+    },
+    {
+      "title": "💬 Discord Community",
+      "url": "https://discord.gg/alexcreator",
+      "icon": "💬",
+      "description": "Join our growing community"
+    }
+  ],
+  "social": {
+    "youtube": "alexcreator",
+    "instagram": "alexcreator",
+    "twitter": "alexcreator",
+    "tiktok": "alexcreator",
+    "discord": "alexcreator"
+  },
+  "customization": {
+    "background": "linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1)",
+    "accentColor": "#ff6b6b",
+    "textColor": "#ffffff"
+  }
+}
