@@ -110,14 +110,6 @@ Your renderer should work with JSON files following this structure:
 6. **Include documentation** on how your renderer works
 7. **Test with multiple JSON configurations** to prove universality
 
-## 🎁 Prizes
-
-- **Best Universal Renderer** - $200
-- **Most Innovative Features** - $100
-- **Best Performance** - $75
-- **Best Documentation** - $50
-- **Community Choice** - $75
-
 ## 📅 Timeline
 
 - **Start**: [Current Date]
